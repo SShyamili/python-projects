@@ -1,0 +1,55 @@
+import random
+
+easy_attempts = 10
+hard_attempts = 5
+
+# Function to select difficulty level
+def difficulty():
+    level = input("Choose the level of difficulty: 'EASY' or 'HARD': ").upper()
+    if level == "EASY":
+        return easy_attempts
+    elif level == "HARD":
+        return hard_attempts
+    else:
+        print("Invalid input. Defaulting to EASY.")
+        return easy_attempts
+
+# Function to provide feedback on the guess
+def guess_number(actual_answer, user_answer):
+    if user_answer > actual_answer:
+        print("Your guess is too high.")
+    elif user_answer < actual_answer:
+        print("Your guess is too low.")
+    else:
+        print(f"You got it! The number is {actual_answer}.")
+        return True
+    return False
+
+# Function to track the remaining attempts
+def track(turns):
+    turns -= 1
+    print(f"You have {turns} attempts left.")
+    return turns
+
+# Main game function
+def play_game():
+    print("Welcome to the Number Guessing Game!")
+    print("I am thinking of a number between 1 and 100.")
+    actual_answer = random.randint(1, 100)
+    turns = difficulty()
+
+    user_answer = 0
+    while user_answer != actual_answer and turns > 0:
+        try:
+            user_answer = int(input("Guess the number: "))
+            correct = guess_number(actual_answer, user_answer)
+            if correct:
+                break
+            turns = track(turns)
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+    
+    if turns == 0 and user_answer != actual_answer:
+        print(f"You've run out of attempts! The number was {actual_answer}. Better luck next time!")
+
+play_game()
