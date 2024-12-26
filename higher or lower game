@@ -1,0 +1,84 @@
+import random
+
+# Game banner stored in a variable
+GAME_BANNER = """   __  ___       __             
+   / / / (_)___ _/ /_  ___  _____
+  / /_/ / / __ '/ __ \/ _ \/ ___/
+ / __  / / /_/ / / / /  __/ /    
+/_/ ///_/\__, /_/ /_/\___/_/     
+   / /  /____/_      _____  _____
+  / /   / __ \ | /| / / _ \/ ___/
+ / /___/ /_/ / |/ |/ /  __/ /    
+/_____/\____/|__/|__/\___/_/   
+"""
+
+data = [
+    {"name": "Shah Rukh Khan", "description": "Indian actor, film producer, and television personality", "followers": 42000000, "country": "India"},
+    {"name": "Cristiano Ronaldo", "description": "Portuguese professional footballer who plays as a forward", "followers": 500000000, "country": "Portugal"},
+    {"name": "Ariana Grande", "description": "American singer, songwriter, and actress", "followers": 300000000, "country": "USA"},
+    {"name": "Justin Bieber", "description": "Canadian singer and songwriter", "followers": 200000000, "country": "Canada"},
+    {"name": "Rihanna", "description": "Barbadian singer, actress, and businesswoman", "followers": 100000000, "country": "Barbados"},
+    {"name": "Lionel Messi", "description": "Argentine professional footballer who plays as a forward", "followers": 400000000, "country": "Argentina"},
+    {"name": "Beyoncé", "description": "American singer, songwriter, and actress", "followers": 200000000, "country": "USA"},
+    {"name": "Kylie Jenner", "description": "American media personality, socialite, and businesswoman", "followers": 250000000, "country": "USA"},
+    {"name": "LeBron James", "description": "American professional basketball player", "followers": 100000000, "country": "USA"},
+    {"name": "Billie Eilish", "description": "American singer and songwriter", "followers": 100000000, "country": "USA"},
+    {"name": "Chris Hemsworth", "description": "Australian actor", "followers": 50000000, "country": "Australia"},
+    {"name": "Emma Watson", "description": "British actress, model, and activist", "followers": 60000000, "country": "UK"},
+    {"name": "Tom Holland", "description": "British actor", "followers": 50000000, "country": "UK"}
+]
+
+def format_data(account):
+    """Format account information for display."""
+    account_name = account["name"]
+    account_desc = account["description"]
+    account_country = account["country"]
+    return f"{account_name}, a {account_desc}, from {account_country}"
+
+def check_answer(user_guess, a_followers, b_followers):
+    """Check if the user's guess is correct."""
+    return (a_followers > b_followers and user_guess == "a") or \
+           (b_followers > a_followers and user_guess == "b")
+
+def display_banner():
+    """Print the game banner."""
+    print(GAME_BANNER)
+
+def main():
+    """Run the Higher/Lower game."""
+    print("Welcome to the Higher/Lower game!")
+    print("Guess who has more followers on social media.")
+    display_banner()
+    
+    score = 0
+    game_should_continue = True
+    account_b = random.choice(data)
+
+    while game_should_continue:
+        account_a = account_b
+        account_b = random.choice(data)
+        
+        while account_a == account_b:
+            account_b = random.choice(data)
+        
+        print(f"Compare A: {format_data(account_a)}.")
+        print("VS")
+        print(f"Compare B: {format_data(account_b)}.")
+        
+        guess = input("Who has more followers? Type 'A' or 'B': ").lower()
+        print("\n" * 20)
+        display_banner()
+        
+        a_follower_count = account_a["followers"]
+        b_follower_count = account_b["followers"]
+        is_correct = check_answer(guess, a_follower_count, b_follower_count)
+        
+        if is_correct:
+            score += 1
+            print(f"You're right! Your current score: {score}")
+        else:
+            print(f"Sorry, that's wrong. Final score: {score}")
+            game_should_continue = False
+
+if __name__ == "__main__":
+    main()
