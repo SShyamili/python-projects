@@ -1,0 +1,143 @@
+This Python code simulates the functionality of a coffee vending machine.
+It allows users to order a drink, processes payments, checks resource availability, and provides a detailed report of the machine's status.
+
+1. Menu and Pricing
+The menu dictionary defines three coffee options: cappuccino, latte, and espresso.
+Each option includes:
+Required ingredients (water, coffee, milk).
+The cost of the drink in rupees (price).
+
+2. Resources Management
+The resources dictionary keeps track of the machine's available resources, such as water, coffee, and milk.
+The profit variable tracks the total money earned by the machine.
+3. Core Functions
+is_resource_sufficient(order_ingredients):
+
+Checks if the required ingredients for a drink are available.
+Returns False if any resource is insufficient and prints an error message.
+make_coffee(drink_name, order_ingredients):
+
+Deducts the used ingredients from the resources dictionary.
+Displays a message indicating that the drink is ready.
+process_coins():
+
+Prompts the user to insert money and calculates the total amount entered.
+is_transaction_successful(money_received, drink_cost):
+
+Checks if the user has provided enough money to cover the drink's cost.
+Provides change if necessary and adds the earnings to the profit.
+If insufficient funds are provided, refunds the money and prints an error message.
+4. Interactive Interface
+The machine operates in a continuous loop until the user turns it off (choice == "off").
+Options available:
+Order Drinks: User can choose from cappuccino, latte, or espresso.
+View Report: Displays the current levels of resources and the profit earned.
+Turn Off: Stops the machine's operation.
+Handles invalid inputs gracefully by prompting the user to choose a valid option.
+5. How It Works
+The user is prompted to input their choice of drink.
+If the drink is available:
+The machine checks for sufficient resources using is_resource_sufficient.
+If resources are sufficient, the user is asked to insert money via process_coins.
+The transaction is validated with is_transaction_successful. If successful, the drink is prepared using make_coffee.
+The report option displays the remaining resources and the total profit.
+The machine continues operating until the user inputs off.
+
+menu = {
+    "cappuccino": {
+        "ingredients": {
+            "water": 250,
+            "coffee": 24,
+            "milk": 100,
+        },
+        "price": 250,
+    },
+    "latte": {
+        "ingredients": {
+            "water": 200,
+            "coffee": 24,
+            "milk": 150,
+        },
+        "price": 200,
+    },
+    "espresso": {
+        "ingredients": {
+            "water": 50,
+            "coffee": 18,
+        },
+        "price": 150,
+    }
+}
+
+profit = 0
+resources = {
+    "water": 300,
+    "coffee": 100,
+    "milk": 200,
+}
+
+def is_resource_sufficient(order_ingredients):
+    """Check if resources are sufficient for the order."""
+    for item in order_ingredients:
+        if order_ingredients[item] > resources[item]:
+            print(f"Sorry, there is not enough {item}.")
+            return False
+    return True
+
+def make_coffee(drink_name, order_ingredients):
+    """Deduct the required resources and serve the coffee."""
+    for item in order_ingredients:
+        resources[item] -= order_ingredients[item]
+    print(f"Here is your {drink_name} ☕. Enjoy!")
+
+def process_coins():
+    """Calculate the total money received from coins."""
+    print("Please insert coins.")
+    total = int(input("How many rupees? "))
+    return total
+
+def is_transaction_successful(money_received, drink_cost):
+    """Check if the transaction is successful."""
+    if money_received >= drink_cost:
+        change = round(money_received - drink_cost, 2)
+        print(f"Here is your change: Rs {change}")
+        global profit
+        profit += drink_cost
+        return True
+    else:
+        print("Sorry, that's not enough money. Money refunded.")
+        return False
+
+is_on = True
+
+while is_on:
+    choice = input("What would you like? (cappuccino/latte/espresso): ").lower()
+    if choice == "off":
+        is_on = False
+    elif choice == "report":
+        print(f"Water: {resources['water']}ml")
+        print(f"Coffee: {resources['coffee']}g")
+        print(f"Milk: {resources['milk']}ml")
+        print(f"Money: Rs {profit}")
+    elif choice in menu:
+        drink = menu[choice]
+        if is_resource_sufficient(drink["ingredients"]):
+            payment = process_coins()
+            if is_transaction_successful(payment, drink["price"]):
+                make_coffee(choice, drink["ingredients"])
+    else:
+        print("Invalid option. Please choose from cappuccino, latte, or espresso.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
